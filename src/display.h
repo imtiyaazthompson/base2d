@@ -37,6 +37,7 @@ struct display {
 	int (*get_height)(DISPLAY *this);
 	SDL_Window* (*get_window)(DISPLAY *this);
 	SDL_Surface* (*get_container)(DISPLAY *this);
+	void (*resize_container)(DISPLAY *this);
 	void (*show)(DISPLAY *this);
 };
 
@@ -60,6 +61,7 @@ int getter_width(DISPLAY *this);
 int getter_height(DISPLAY *this);
 SDL_Window* getter_window(DISPLAY *this);
 SDL_Surface* getter_container(DISPLAY *this);
+void resizer_container(DISPLAY *this);
 void updater(DISPLAY *this);
 
 #endif

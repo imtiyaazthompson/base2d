@@ -2,6 +2,14 @@
 #define EVENTMANAGER_H
 
 #include <SDL2/SDL.h>
+#include "display.h"
+
+/*
+ * Custom type definitions
+ */
+
+typedef unsigned int event_t;
+
 
 /*
  * Forward declaration of class/struct
@@ -28,21 +36,17 @@ typedef struct eventmanager EVENTMAN;
 struct eventmanager {
 	// Methods
 
-	//Listener that polls and returns an SDL_Event
-	SDL_Event (*listen)(void);
-
-	//Handlers - this is a growing list
-	void (*handle_window)(SDL_Event event);
-	int (*handle_quit)(SDL_Event event);
-}
+	// Listener that polls and returns an SDL_Event->type
+	// End-user uses b2dScript to write own handlers for specific 
+	// events
+	event_t (*listen)(void);
+};
 
 /*
  * Define methods
  */
 
-void listener(void);
-void window_handler(SDL_Event event);
-int quit_handler(SDL_Event event);
+event_t listener(void);
 
 /*
  * Define Constructor for event manager
@@ -54,6 +58,6 @@ EVENTMAN* eventmanager_construct(void);
  * Define Destructor for event manager
  */
 
-void eventmanager_destruct(void);
+void eventmanager_destruct(EVENTMAN *this);
 
 #endif

@@ -15,7 +15,6 @@ DISPLAY* display_construct(int width, int height,char *cap,int flags) {
 	DISPLAY *new_display = malloc(size);
 	new_display->width = width;
 	new_display->height = height;
-	
 	new_display->window = NULL;
 	new_display->window = SDL_CreateWindow(
 		cap,
@@ -42,6 +41,7 @@ DISPLAY* display_construct(int width, int height,char *cap,int flags) {
 	new_display->get_height = getter_height;
 	new_display->get_window = getter_window;
 	new_display->get_container = getter_container;
+	new_display->resize_container = resizer_container;
 	new_display->show = updater;
 
 	pack(size);
@@ -85,6 +85,16 @@ SDL_Window* getter_window(DISPLAY *this) {
 
 SDL_Surface* getter_container(DISPLAY *this) {
 	return this->container;
+}
+
+/*
+ * Resize the container surface of the window
+ * Free the old surface then create a new one with standard fill
+ */
+void resizer_container(DISPLAY *this) {
+	SDL_FreeSurface(this->container);
+	this->container = SDL_GetWindowSurface(this->window);
+	SDL_FillRect(this->container,NULL,SDL_MapRGB(this->container->format,BLK[0],BLK[1],BLK[2]));
 }
 
 /*

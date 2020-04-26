@@ -9,4 +9,4 @@ RSC = rsc/
 all: client
 
 client: $(SRC)client.c
-	$(CC) $(CFLAGS) -o $(BIN)client $(SRC)client.c $(SRC)base2d.c $(SRC)memtracker.c $(SRC)display.c $(LFLAGS)
+	$(CC) $(CFLAGS) -o $(BIN)client $(SRC)client.c $(SRC)base2d.c $(SRC)memtracker.c $(SRC)display.c $(SRC)eventmanager.c $(LFLAGS)
