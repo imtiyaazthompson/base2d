@@ -1,50 +1,26 @@
-#include "base2d.h"
-#include "memtracker.h"
-#include "display.h"
-#include "eventmanager.h"
-#include "globals.h"
-#include "local.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include "base2d.h"
+#include "globals.h"
 
+int main(int argc,char **argv) {
+	// Init Base2D game
+	init_env(VIDEO|AUDIO);
 
-int main(int argc, char **argv) {
-	// Construct a new base2d object
-	game = base2d_construct(VIDEO|AUDIO);
+	// Init Display display
+	init_disp(640,480,"Display",RESIZABLE|VISIBLE,make_color(255,255,255,255));
 
-	// Detect if base2d initialized properly
-	if (!(game->init(game))) {
-		printf("Could not initialize base2d\n");
-		base2d_destruct(game);
-		return TERMINATE;
-	}
-	
-	// Construct a new display
-	display = display_construct(640,480,"Display",VISIBLE|RESIZABLE);
-
-	// Construct a new eventmanager
-	evm = eventmanager_construct();
-
-	// Print current heap memory usage
-	used();
-	
-
-	// Main Game Loop
-	event_t event;
+	// Game Loop
+	state_t status;
 	while (TRUE) {
-		// Update the display
-		display->show(display);
-
-		// Start listening for events
-		event = evm->listen();
-		if (event > 0) {
-			printf("Event just occured: %d\n",event);
-		} 
-		
-		if (event == -1) {
+		update();
+		status = listen();
+		if (!status) {
 			break;
 		}
+		/* User Event Handles */
 	}
 
-	used();
+	printf("base2d Closed\n");
 	return 0;
 }

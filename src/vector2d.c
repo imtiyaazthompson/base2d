@@ -41,14 +41,3 @@ double get_mag(Vector2D *u) {
 	double y_comp = u->y * u_y;
 	mag = sqrt(x_comp + y_comp);
 }
-
-double predict_pos(Vector2D *vel,Vector2D *pos,double dt) {
-
-	
-}
-
-double get_dir(Vector2D *u) {
-	double x_comp = u->x;
-	double y_comp = u->y;
-	double angle;
-}

@@ -2,82 +2,132 @@
 #define BASE2D_H
 
 #include <SDL2/SDL.h>
-#include "memtracker.h"
+#include <stdlib.h>
 
-/*
- * base2d engine's core - handles SDL_Init() and SDL_Quit().
- * Treated as the Game object
- *
- * Author: Imityaaz Thompson
- * Date: 25 April 2020
- */
+/*************************
+ *  SYMBOLIC CONSTANTS	 *
+ ************************/
 
-/*
- * Symbolic constants that map to SDL FLAGS
- * Flags are ORd together to init the various subsystems
- */
-enum FLAGS {
-		VIDEO=SDL_INIT_VIDEO,
-		AUDIO=SDL_INIT_AUDIO,
-		TIMET=SDL_INIT_TIMER,
-		JOYSTICK=SDL_INIT_JOYSTICK,
-		CONTROLLER=SDL_INIT_GAMECONTROLLER,
-		RUMBLE=SDL_INIT_HAPTIC,
-		EVENT=SDL_INIT_EVENTS,
-		ALL=SDL_INIT_EVERYTHING
-	};
-
-/*
- * Symbolic constants for booleans
- */
-
-enum bool {FALSE,TRUE};
-
-/*
- * Forward declaration of base2d struct/class
- */
-
-typedef struct base2d BASE2D;
-
-/*
- * Defining the BASE2D class
- */
-
-struct base2d {
-	//FIELDS
-	char is_started;
-	unsigned int flag;
-	
-	//METHODS
-	int (*init)(BASE2D *this);
-	unsigned int (*get_flags)(BASE2D *this);
-	char (*is_running)(BASE2D *this);
+enum subsytems {
+	VIDEO=SDL_INIT_VIDEO,
+        AUDIO=SDL_INIT_AUDIO,
+        TIME=SDL_INIT_TIMER,
+        JOYSTICK=SDL_INIT_JOYSTICK,
+        CONTROLLER=SDL_INIT_GAMECONTROLLER,
+        RUMBLE=SDL_INIT_HAPTIC,
+        EVENT=SDL_INIT_EVENTS,
+        ALL=SDL_INIT_EVERYTHING
 };
 
-/*
- * Defining BASE2D methods
- * Methods will be written in base2d.c 
- */
+enum dispflags {
+	FULL=SDL_WINDOW_FULLSCREEN,
+        DESKTOP=SDL_WINDOW_FULLSCREEN_DESKTOP,
+       	HIDDEN=SDL_WINDOW_HIDDEN,
+        RESIZABLE=SDL_WINDOW_RESIZABLE,
+        VISIBLE=SDL_WINDOW_SHOWN
+};
 
-int initializer(BASE2D *this);
-unsigned int getter_flags(BASE2D *this);
-char run_checker(BASE2D *this);
+enum states {FALSE,TRUE};
 
-/*
- * Define BASE2D constructor
- */
 
-BASE2D* base2d_construct(unsigned int ORDflag);
+/*********************
+ *    EVM CONST'S    *
+ *		     *
+ * UPDATE THIS LIST  *
+ *********************/
+enum event_types {
+	QUIT=SDL_QUIT,
+	WINDOW=SDL_WINDOWEVENT
+};
 
-/*
- * Define BASE2D destructor
- */
+enum window_stated {
+	MOVED=SDL_WINDOWEVENT_MOVED,
+	RESIZED=SDL_WINDOWEVENT_RESIZED,
+	FOCUS=SDL_WINDOWEVENT_ENTER,
+	UNFOCUS=SDL_WINDOWEVENT_LEAVE
+};
+/* KEYBOARD KEY CONSTANTS HERE */
+/* MOUSE CONSTANTS HERE */
 
-void base2d_destruct(BASE2D *this);
+/************************
+ *   TYPE DEFINITIONS   *
+ ************************/
 
-/*
- * Utility functions
- */
+typedef unsigned char state_t;
+typedef unsigned int flag_t;
+typedef unsigned char color_t;
 
+typedef struct base2d Base2D;
+typedef struct display Display;
+typedef struct eventman Eventman;
+
+/************************
+ *      STRUCTURES      *
+ ************************/
+
+struct base2d {
+	state_t is_running;
+};
+
+struct display {
+	int width;
+	int height;
+	color_t *color;
+	SDL_Window *window;
+	SDL_Surface *container;
+};
+
+struct eventman {
+	SDL_Event trigger;
+	SDL_EventType event;
+};
+
+/*********************
+ *  FUNCTION DEF'S   *
+ *		     *
+ *  STRUCTS WILL BE  *
+ *      GLOBAL       *
+ *********************/
+
+/*********************
+ *	BASE2D	     *
+ *********************/
+
+state_t init_env(flag_t subsystems);
+state_t is_running(void);
+state_t quit(void);
 void pause(int time_ms);
+
+/*********************
+ *      DISPLAY      *
+ *********************/
+
+state_t init_disp(int width,int height,char *cap,flag_t flags,color_t *rgba);
+int get_width(void);
+int get_height(void);
+color_t* get_color(void);
+color_t get_red(void);
+color_t get_green(void);
+color_t get_blue(void);
+color_t get_alpha(void);
+SDL_Window* get_window(void);
+SDL_Surface* get_container(void);
+void resize_window(void);
+void update(void);
+void destruct_main_display(void);
+
+/*********************
+ *	EVENTMAN     *
+ *********************/
+
+state_t init_evm(void);
+state_t listen(void);
+state_t handle_resize(void);
+state_t handle_quit(void);
+
+/*********************
+ *	 UTILS	     *
+ *********************/
+
+color_t* make_color(int r,int g,int b,int a);
 #endif

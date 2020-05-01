@@ -2,11 +2,14 @@
 #define GLOBALS_H
 
 #include "base2d.h"
-#include "display.h"
-#include "eventmanager.h"
 
-BASE2D *game;
-DISPLAY *display;
-EVENTMAN *evm;
+/*********************
+ *      GLOBALS      *
+ *********************/
+
+Base2D game;
+Display *display;
+Eventman evm;
+
 
 #endif

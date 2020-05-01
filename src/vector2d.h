@@ -42,19 +42,4 @@ double dotproduct(Vector2D *u,Vector2D *v);
  */
 
 double get_mag(Vector2D *u);
-
-/*
- * Get the direction of a vector, radians
- */
-
-double get_dir(Vector2D *u);
-
-/*
- * Predict the next position of an objects
- * Based on a small time difference
- * Known velocity
- * And known starting position
- */
-
-double predict_pos(Vector2D *vel,Vector2D *pos,double dt);
 #endif
